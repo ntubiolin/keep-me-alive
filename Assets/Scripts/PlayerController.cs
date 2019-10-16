@@ -35,9 +35,10 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {	
+		isLearning = true;
 		GetComponent<BoxCollider2D> ().enabled = false;
 
-		isLearning = (genomes.Count < 4);
+		// isLearning = (genomes.Count < 4);
 		if (!isLearning && Utils.actualGenome >= genomes.Count) {
 			print ("Acabou de jogar os genomas");
 			Utils.clearCrossOversFolder();
@@ -150,9 +151,11 @@ public class PlayerController : MonoBehaviour {
 
 	// Called when a collision happens
 	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.name.StartsWith ("cactus")) {			
-			GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = true;
-			Time.timeScale = 0;
+		//if (coll.gameObject.tag == "cactus") {
+		if (coll.gameObject.name.StartsWith ("cactus")) {
+			Destroy(coll.gameObject);			
+				//GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = true;
+			//Time.timeScale = 0;
 
 			Genome genome = new Genome {
 				fitness = Genetic.calculateFitness(jumps, cactus),
