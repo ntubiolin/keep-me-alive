@@ -36,36 +36,8 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {	
 		GetComponent<BoxCollider2D> ().enabled = false;
-
-		isLearning = (genomes.Count < 4);
-		if (!isLearning && Utils.actualGenome >= genomes.Count) {
-			print ("Acabou de jogar os genomas");
-			Utils.clearCrossOversFolder();
-			genomes = Utils.loadAllGenomes (); //Force GENOMES root folder
-
-			List<Genome> bestGenomes = Utils.naturalSelection (genomes, 4);
-			Utils.clearGenomesFolder();
-
-			for (int i = 0; i < bestGenomes.Count; i++) {
-				Utils.persistInJson (bestGenomes[i], genomeBasePath + i + "_");
-			}
-				
-			//New Crossovers + Mutations
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0; j < 4; j++) {
-					if (i == j) {
-						continue;
-					}						
-
-					Genome g = Genetic.crossOver (bestGenomes [i], bestGenomes [j]);
-					g = Genetic.mutate (g);
-					Utils.persistInJson (g, "Genomes/CrossedOvers/genome_" + i + "_" + j + "_");
-				}
-			}
-
-			genomes = Utils.loadAllGenomes ();
-			Utils.actualGenome = 0;
-		}
+		isLearning = true;
+		// isLearning = (genomes.Count < 4);
 		sprites = Resources.LoadAll<Sprite> ("Art/Player/Standing");
 		crouchingSprites = Resources.LoadAll<Sprite> ("Art/Player/Crouching");
 
