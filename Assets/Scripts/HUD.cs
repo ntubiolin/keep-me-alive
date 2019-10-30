@@ -11,23 +11,23 @@ public class HUD : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		score = 0;
-		UpdateScore ();
+		UpdatePlayerScore(PlayerController.GetInstance().getPlayerLifeScore());
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		score++;
-		UpdateScore ();
+		UpdatePlayerScore(PlayerController.GetInstance().getPlayerLifeScore());
 	}
 
 	public void AddScore (int newScoreValue)
 	{
 		score += newScoreValue;
-		UpdateScore ();
+		// UpdateScore ();
 	}
 
-	void UpdateScore ()
+	void UpdatePlayerScore (int score)
 	{
-		scoreText.text = "Score: " + score;
+		scoreText.text = "LifeScore: " + score;
 	}
 }

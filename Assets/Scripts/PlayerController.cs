@@ -7,7 +7,13 @@ using UnityEngine.SceneManagement;
 
 [Serializable]
 public class PlayerController : MonoBehaviour {
-	
+	public event EventHandler OnDied;
+	private static PlayerController instance;
+	public static PlayerController GetInstance() {
+		return instance;
+	}
+	private int lifeScores = 200;
+	private bool isContinueChangeLifeScores = true;
 	private float moveSpeed = 6.0f;
 	private float jumpHeight = 10.0f;
 
@@ -32,8 +38,25 @@ public class PlayerController : MonoBehaviour {
 	private int actualJumpGenome = 0;
 
 	private bool isLearning = true; //If a real player is playing the game
-
+	public int getPlayerLifeScore(){
+		return lifeScores;
+	}
+	public bool decreaseLifeScore(int value = 1){
+		lifeScores -= value;
+		return true;
+	}
+	public void DisableContinueChangeLifeScores(){
+		isContinueChangeLifeScores = false;
+	}
+	private static void Dino_OnDied(object sender, System.EventArgs e) {
+		
+		instance.DisableContinueChangeLifeScores();
+	}
 	// Use this for initialization
+	private void Awake() {
+		instance = this;
+		instance.OnDied += Dino_OnDied;
+	}
 	void Start () {	
 		GetComponent<BoxCollider2D> ().enabled = false;
 		isLearning = true;
@@ -70,8 +93,24 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {		
+	void Update () {
+		if(lifeScores <= 0){
+			if (OnDied != null) {
+				OnDied(this, EventArgs.Empty);
+			}
+			// XXX 
+			GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = true;
+			Time.timeScale = 0;
+			if(!isLearning) {
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+				Time.timeScale = 1;
+				Utils.actualGenome++;
+			}				
+		}
 		spriteInterval -= Time.deltaTime;
+		if(isContinueChangeLifeScores){
+			decreaseLifeScore(1);
+		}
 		if (spriteInterval < 0) {
 			spriteInterval = 0.1f;
 			if (isCrouching) {				
@@ -123,25 +162,29 @@ public class PlayerController : MonoBehaviour {
 	// Called when a collision happens
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.name.StartsWith ("cactus")) {			
+			if (OnDied != null) OnDied(this, EventArgs.Empty);
 			GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = true;
 			Time.timeScale = 0;
 
-			Genome genome = new Genome {
-				fitness = Genetic.calculateFitness(jumps, cactus),
-				jumps = jumps
-			};
+			// Genome genome = new Genome {
+			// 	fitness = Genetic.calculateFitness(jumps, cactus),
+			// 	jumps = jumps
+			// };
 
-			Utils.persistInJson (genome, genomeBasePath);
+			// Utils.persistInJson (genome, genomeBasePath);
 
-			jumps.Clear();
+			// jumps.Clear();
 
-			if(!isLearning) {
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-				Time.timeScale = 1;
-				Utils.actualGenome++;
-			}				
+			// if(!isLearning) {
+			// 	SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			// 	Time.timeScale = 1;
+			// 	Utils.actualGenome++;
+			// }				
 		} else if (coll.gameObject.name.StartsWith ("Ground")) {
 			isGrounded = true;
+		}else if(coll.gameObject.tag =="bread"){
+			Destroy(coll.gameObject);
+			lifeScores += 1000;
 		}
 	}
 
