@@ -24,11 +24,14 @@ public class CameraController : MonoBehaviour {
 		aux.y = 0;
 		//aux.x -= 1; Scale
 		transform.position = aux;
+		// Debug.Log(player.transform.position);
 	}
 
 	public void OnRestartButtonClicked()
 	{
+		// Debug.Log(SceneManager.GetActiveScene().name);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		Time.timeScale = 1;
+		PlayerController.GetInstance().setPlayerLifeScore(200);
 	}
 }

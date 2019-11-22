@@ -41,6 +41,9 @@ public class PlayerController : MonoBehaviour {
 	public int getPlayerLifeScore(){
 		return lifeScores;
 	}
+	public void setPlayerLifeScore(int value){
+		lifeScores = value;
+	}
 	public bool decreaseLifeScore(int value = 1){
 		lifeScores -= value;
 		return true;
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour {
 	private static void Dino_OnDied(object sender, System.EventArgs e) {
 		
 		instance.DisableContinueChangeLifeScores();
+		// instance.lifeScores = 200;
 	}
 	// Use this for initialization
 	private void Awake() {
@@ -99,13 +103,19 @@ public class PlayerController : MonoBehaviour {
 				OnDied(this, EventArgs.Empty);
 			}
 			// XXX 
+			// GetComponent<Rigidbody2D> ().velocity = new Vector2 (moveSpeed, GetComponent<Rigidbody2D> ().velocity.y);
+
 			GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = true;
 			Time.timeScale = 0;
-			if(!isLearning) {
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-				Time.timeScale = 1;
-				Utils.actualGenome++;
-			}				
+			// Debug.Log(SceneManager.GetActiveScene().name);
+			// SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			// Time.timeScale = 1;
+			
+			// if(!isLearning) {
+			// 	SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+			// 	Time.timeScale = 1;
+			// 	Utils.actualGenome++;
+			// }				
 		}
 		spriteInterval -= Time.deltaTime;
 		if(isContinueChangeLifeScores){
