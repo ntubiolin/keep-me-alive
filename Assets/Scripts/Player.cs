@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
 	
 	public event EventHandler OnDied;
 	public event EventHandler OnStartedPlaying;
+	public event EventHandler OnReStartedPlaying;
 	private static Player instance;
 	public static Player GetInstance() {
 		return instance;
@@ -20,7 +21,7 @@ public class Player : MonoBehaviour {
 		GetComponent<BoxCollider2D> ().enabled = false;
 		GetComponent<PolygonCollider2D> ().enabled = true;
 	}
-	private int lifeScores = 10000;
+	private int lifeScores = 1000;
 	private bool isContinueChangeLifeScores = true;
 	private float moveSpeed = 1.0f;
 	private float jumpHeight = 10.0f;
@@ -66,8 +67,19 @@ public class Player : MonoBehaviour {
 	private static void Dino_OnDied(object sender, System.EventArgs e) {
 		
 		instance.DisableContinueChangeLifeScores();
-		GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = true;
-		Time.timeScale = 0;
+		// GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = true;
+		Time.timeScale = 0.3f;
+		instance.state = State.Dead;
+		
+	}
+	private static void Player_OnStart(object sender, System.EventArgs e){
+		Time.timeScale = 1;
+		instance.state = State.Playing;
+		instance.playerRigidbody2D.bodyType = RigidbodyType2D.Dynamic;// XXX Static vs dynamic? If Static, the turtle cannot jump!
+		instance.Jump();
+	}
+	private static void Player_OnReStart(object sender, System.EventArgs e){
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 	// Use this for initialization
 	private void Awake() {
@@ -75,13 +87,15 @@ public class Player : MonoBehaviour {
 		playerRigidbody2D = GetComponent<Rigidbody2D>();
         playerRigidbody2D.bodyType = RigidbodyType2D.Static;// XXX What's its function?
 		instance.OnDied += Dino_OnDied;
+		instance.OnStartedPlaying += Player_OnStart;
+		instance.OnReStartedPlaying += Player_OnReStart;
 		state = State.WaitingToStart;
 	}
 	void Start () {	
 		GetComponent<BoxCollider2D> ().enabled = false;// XXX What's its function
 		sprites = Resources.LoadAll<Sprite> ("Art/Player/Standing");
 		crouchingSprites = Resources.LoadAll<Sprite> ("Art/Player/Crouching");
-		GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = false;// XXX What's its functionality?
+		GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = false;// XXX What's its functionality? Game over scene?
 	}
 	
 	// Update is called once per frame
@@ -104,23 +118,23 @@ public class Player : MonoBehaviour {
                 Jump();
             }
 
-            // Rotate bird as it jumps and falls
+            // Rotate player as it jumps and falls
             transform.eulerAngles = new Vector3(0, 0, playerRigidbody2D.velocity.y * .15f);
             break;
         case State.Dead:
+			if(TestInput()){
+				// TODO change the reload scene
+				if (OnStartedPlaying != null) {
+					OnReStartedPlaying(this, EventArgs.Empty);
+					OnStartedPlaying(this, EventArgs.Empty);
+				}
+			}
             break;
         }
 		if(lifeScores <= 0){
 			if (OnDied != null) {
 				OnDied(this, EventArgs.Empty);
 			}
-
-			if(Input.GetKeyDown (KeyCode.Space)){
-				// TODO change the reload scene
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-				Time.timeScale = 1;
-			}
-			
 			
 		}
 		spriteInterval -= Time.deltaTime; // Time.deltaTime = 1.6xx
@@ -152,7 +166,7 @@ public class Player : MonoBehaviour {
 			isGrounded = false;
 
 		} else if (isGrounded && !isCrouching && Input.GetKeyDown (KeyCode.DownArrow)) {
-			CodeMonkey.CMDebug.TextPopupMouse("FFF");
+			CodeMonkey.CMDebug.TextPopupMouse("I am not afraid of trash!");
 			isCrouching = true;
 			GetComponent<BoxCollider2D> ().enabled = true;
 			GetComponent<PolygonCollider2D> ().enabled = true;
