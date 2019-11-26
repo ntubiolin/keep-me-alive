@@ -314,7 +314,7 @@ public class Level : MonoBehaviour {
         GameObject obstacle = Instantiate(GameAssets.GetInstance().pfObstacleGameObject);
         float obstacleYPosition = height;
         obstacle.GetComponent<Transform>().position = new Vector3(xPosition, obstacleYPosition);
-        obstacle.GetComponent<Rigidbody2D>().velocity = new Vector3(Random.Range(-400f, 0f), Random.Range(-400f, 0f));
+        obstacle.GetComponent<Rigidbody2D>().velocity = new Vector3(Random.Range(-200f, 0f), Random.Range(-200f, 0f));
         Obstacle obstacleObj = new Obstacle(obstacle);
         obstacleList.Add(obstacleObj);
         // // [Old version] Set up Pipe Body
