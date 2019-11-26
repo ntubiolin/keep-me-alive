@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour {
 		Vector3 aux = player.transform.position + offset;
 		aux.y = 0;
 		//aux.x -= 1; Scale
-		transform.position = aux;
+		// transform.position = aux;
 		// Debug.Log(player.transform.position);
 	}
 
@@ -32,6 +32,6 @@ public class CameraController : MonoBehaviour {
 		// Debug.Log(SceneManager.GetActiveScene().name);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		Time.timeScale = 1;
-		PlayerController.GetInstance().setPlayerLifeScore(200);
+		Player.GetInstance().setPlayerLifeScore(200);
 	}
 }
