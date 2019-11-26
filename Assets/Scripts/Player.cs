@@ -16,6 +16,9 @@ public class Player : MonoBehaviour {
 	public static Player GetInstance() {
 		return instance;
 	}
+	public static string GetDebugMsg() {
+		return "I am player.";
+	}
 	private void RunInvoke(){
 		isCrouching = false;
 		GetComponent<BoxCollider2D> ().enabled = false;
@@ -96,7 +99,7 @@ public class Player : MonoBehaviour {
 		GetComponent<BoxCollider2D> ().enabled = false;// XXX What's its function
 		sprites = Resources.LoadAll<Sprite> ("Art/Player/Standing");
 		crouchingSprites = Resources.LoadAll<Sprite> ("Art/Player/Crouching");
-		GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = false;// XXX What's its functionality? Game over scene?
+		// GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = false;// XXX What's its functionality? Game over scene?
 	}
 	
 	// Update is called once per frame
@@ -125,10 +128,10 @@ public class Player : MonoBehaviour {
         case State.Dead:
 			if(TestInput()){
 				// TODO change the reload scene
-				if (OnStartedPlaying != null) {
-					OnReStartedPlaying(this, EventArgs.Empty);
-					OnStartedPlaying(this, EventArgs.Empty);
-				}
+				// if (OnStartedPlaying != null) {
+				// 	OnReStartedPlaying(this, EventArgs.Empty);
+				// 	OnStartedPlaying(this, EventArgs.Empty);
+				// }
 			}
             break;
         }
