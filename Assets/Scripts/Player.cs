@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
 		GetComponent<PolygonCollider2D> ().enabled = true;
 	}
 	private int lifeScores = 1000;
-	private bool isContinueChangeLifeScores = true;
+	private bool isContinueChangeLifeScores = false;
 	private float moveSpeed = 1.0f;
 	private float jumpHeight = 10.0f;
 	
@@ -73,6 +73,7 @@ public class Player : MonoBehaviour {
 		
 	}
 	private static void Player_OnStart(object sender, System.EventArgs e){
+		instance.isContinueChangeLifeScores = true;
 		Time.timeScale = 1;
 		instance.state = State.Playing;
 		instance.playerRigidbody2D.bodyType = RigidbodyType2D.Dynamic;// XXX Static vs dynamic? If Static, the turtle cannot jump!

@@ -310,14 +310,20 @@ public class Level : MonoBehaviour {
         foodList.Add(foodObj);
     }
     private void CreateObstacle(float height, float xPosition) {
-       
-        // Set up Pipe Body
-        Transform obstacle = Instantiate(GameAssets.GetInstance().pfObstacle);
+        // Try obstacle with speed
+        GameObject obstacle = Instantiate(GameAssets.GetInstance().pfObstacleGameObject);
         float obstacleYPosition = height;
-
-        obstacle.position = new Vector3(xPosition, obstacleYPosition);
+        obstacle.GetComponent<Transform>().position = new Vector3(xPosition, obstacleYPosition);
+        obstacle.GetComponent<Rigidbody2D>().velocity = new Vector3(Random.Range(-400f, 0f), Random.Range(-400f, 0f));
         Obstacle obstacleObj = new Obstacle(obstacle);
         obstacleList.Add(obstacleObj);
+        // // [Old version] Set up Pipe Body
+        // Transform obstacle = Instantiate(GameAssets.GetInstance().pfObstacle);
+        // float obstacleYPosition = height;
+
+        // obstacle.position = new Vector3(xPosition, obstacleYPosition);
+        // Obstacle obstacleObj = new Obstacle(obstacle);
+        // obstacleList.Add(obstacleObj);
     }
     public int GetObstaclesPassedCount() {
         return obstaclesPassedCount;
@@ -328,26 +334,23 @@ public class Level : MonoBehaviour {
      * */
     
     private class Obstacle {
-
         private Transform obstacleTransform;
-
-        public Obstacle(Transform obstacleTransform) {
-            // XXX what does this public function mean??? constructor function?
-            this.obstacleTransform = obstacleTransform;
+        private Rigidbody2D obstacleRigidbody2D;
+        // public Obstacle(Transform obstacleTransform) {
+        public Obstacle(GameObject obstacle) {
+            this.obstacleTransform = obstacle.GetComponent<Transform>();
+            this.obstacleRigidbody2D = obstacle.GetComponent<Rigidbody2D>();
         }
-
         public void Move() {
             obstacleTransform.position += new Vector3(-1, 0, 0) * PIPE_MOVE_SPEED * Time.deltaTime;
         }
-
         public float GetXPosition() {
             return obstacleTransform.position.x;
         }
-
         public void DestroySelf() {
             Destroy(obstacleTransform.gameObject);
+            Destroy(obstacleRigidbody2D.gameObject);
         }
-
     }
     public class Food {
 

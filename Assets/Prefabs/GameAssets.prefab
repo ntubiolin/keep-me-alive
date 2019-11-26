@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6155616101779949160
+--- !u!1 &3975799606271346722
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6155616103342120793}
-  - component: {fileID: 6155616101779949161}
+  - component: {fileID: 3975799605246054675}
+  - component: {fileID: 3975799606271346723}
   m_Layer: 0
   m_Name: GameAssets
   m_TagString: Untagged
@@ -17,13 +17,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6155616103342120793
+--- !u!4 &3975799605246054675
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6155616101779949160}
+  m_GameObject: {fileID: 3975799606271346722}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.2765386, y: 2.9422975, z: -15.3125}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,13 +31,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6155616101779949161
+--- !u!114 &3975799606271346723
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6155616101779949160}
+  m_GameObject: {fileID: 3975799606271346722}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28278aae4a21043b491b7a00d41d66c9, type: 3}
@@ -45,6 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pipeHeadSprite: {fileID: 21300000, guid: b0737b448c1124ffba0956cc64bcf0aa, type: 3}
   pfObstacle: {fileID: 5799626811423907323, guid: 7396f50f572374f36a49928756098a9f,
+    type: 3}
+  pfObstacleGameObject: {fileID: 5799626811423907320, guid: 7396f50f572374f36a49928756098a9f,
     type: 3}
   pfFood: {fileID: 6170989308693826329, guid: 25ef8234f4bf441cdb77d8f71a38758c, type: 3}
   pfPipeHead: {fileID: 2538459140622345962, guid: 59931f5a53c6f4e88a2a5a4146bd3299,

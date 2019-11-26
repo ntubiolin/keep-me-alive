@@ -30,6 +30,7 @@ public class GameAssets : MonoBehaviour {
 
     public Sprite pipeHeadSprite;
     public Transform pfObstacle;
+    public GameObject pfObstacleGameObject;
     public Transform pfFood;
     public Transform pfPipeHead;
     public Transform pfPipeBody;
