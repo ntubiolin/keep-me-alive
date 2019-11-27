@@ -29,7 +29,6 @@ public static class Loader {
         SceneManager.LoadScene(Scene.Loading.ToString());
         
         targetScene = scene;
-        CodeMonkey.CMDebug.TextPopupMouse("FJIOEJFIJEFIJ");
     }
 
     public static void LoadTargetScene() {
