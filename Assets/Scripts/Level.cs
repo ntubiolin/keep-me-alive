@@ -31,20 +31,23 @@ public class Level : MonoBehaviour {
     private const float BIRD_X_POSITION = 0f;
 
     private static Level instance;
-
-    public static Level GetInstance() {
-        return instance;
-    }
-
     private List<Transform> groundList;
     private List<Transform> cloudList;
     private float cloudSpawnTimer;
     private List<Obstacle> obstacleList;
     private List<Food> foodList;
+    private float obstacleHeight = 20f;
+    private float foodHeight = -40f;
+    private float obstacleXVelocityMin = -200f;
+    private float obstacleXVelocityMax = 100f;
+    private float obstacleYVelocityMin = -200f;
+    private float obstacleYVelocityMax = 100f;
     private int obstaclesPassedCount;
     private int foodPassedCount;
     private int obstaclesSpawned;
     private int foodSpawned;
+    private float deltaTimeFood = Random.Range(-0.3f, 0.3f);
+    private float deltaTimeObstacle = Random.Range(-0.2f, 0.2f);
     private float obstacleSpawnTimer = 0.5f;
     private float obstacleSpawnTimerMax;
     private float foodSpawnTimer = 0.7f;
@@ -65,6 +68,9 @@ public class Level : MonoBehaviour {
         PlayerDead,
     }
 
+    public static Level GetInstance() {
+        return instance;
+    }
     private void Awake() {
         instance = this;
         SpawnInitialGround(); 
@@ -117,8 +123,6 @@ public class Level : MonoBehaviour {
         }
     }
     private void HandleTimers() {
-        float deltaTimeFood = Random.Range(-0.3f, 0.3f);
-        float deltaTimeObstacle = Random.Range(-0.2f, 0.2f);
         foodSpawnTimer += deltaTimeFood;
         obstacleSpawnTimer += deltaTimeObstacle;
     }
@@ -185,14 +189,15 @@ public class Level : MonoBehaviour {
         if (obstacleSpawnTimer < 0) {
             // Time to spawn another Pipe
             obstacleSpawnTimer += obstacleSpawnTimerMax;
-            float heightEdgeLimit = 10f;
-            float minHeight = gapSize * .5f + heightEdgeLimit;
-            float totalHeight = CAMERA_ORTHO_SIZE * 2f;
-            float maxHeight = totalHeight - gapSize * .5f - heightEdgeLimit;
 
-            float height = Random.Range(minHeight, maxHeight);
-            height = 1f;
-            CreateGapObstacles(height, gapSize, PIPE_SPAWN_X_POSITION);
+            // float heightEdgeLimit = 10f;
+            // float minHeight = gapSize * .5f + heightEdgeLimit;
+            // float totalHeight = CAMERA_ORTHO_SIZE * 2f;
+            // float maxHeight = totalHeight - gapSize * .5f - heightEdgeLimit;
+
+            // float height = Random.Range(minHeight, maxHeight);
+
+            CreateGapObstacles(obstacleHeight, gapSize, PIPE_SPAWN_X_POSITION);
         }
     }
     private void HandleFoodSpawning() {
@@ -200,14 +205,14 @@ public class Level : MonoBehaviour {
         if (foodSpawnTimer < 0) {
             // Time to spawn another Pipe
             foodSpawnTimer += foodSpawnTimerMax;
-            float heightEdgeLimit = 10f;
-            float minHeight = gapSize * .5f + heightEdgeLimit;
-            float totalHeight = CAMERA_ORTHO_SIZE * 2f;
-            float maxHeight = totalHeight - gapSize * .5f - heightEdgeLimit;
+            // float heightEdgeLimit = 10f;
+            // float minHeight = gapSize * .5f + heightEdgeLimit;
+            // float totalHeight = CAMERA_ORTHO_SIZE * 2f;
+            // float maxHeight = totalHeight - gapSize * .5f - heightEdgeLimit;
 
-            float height = Random.Range(minHeight, maxHeight);
-            height =3f;
-            CreateGapFood(height, gapSize, PIPE_SPAWN_X_POSITION);
+            // float height = Random.Range(minHeight, maxHeight);
+            
+            CreateGapFood(foodHeight, gapSize, PIPE_SPAWN_X_POSITION);
         }
     }
     private void HandleObstacleMovement() {
@@ -291,12 +296,12 @@ public class Level : MonoBehaviour {
         if (obstaclesSpawned >= 5) return Difficulty.Medium;
         return Difficulty.Easy;
     }
-    private void CreateGapFood(float gapY, float gapSize, float xPosition) {
-        CreateFood(-40f, xPosition); // XXX -40f should be defined in constant
+    private void CreateGapFood(float height, float gapSize, float xPosition) {
+        CreateFood(height, xPosition); // XXX -40f should be defined in constant
         foodSpawned++;
     }
-    private void CreateGapObstacles(float gapY, float gapSize, float xPosition) {
-        CreateObstacle(20f, xPosition); // XXX -40f should be defined in constant
+    private void CreateGapObstacles(float height, float gapSize, float xPosition) {
+        CreateObstacle(height, xPosition); // XXX -40f should be defined in constant
         obstaclesSpawned++;
         SetDifficulty(GetDifficulty());
     }
@@ -314,7 +319,9 @@ public class Level : MonoBehaviour {
         GameObject obstacle = Instantiate(GameAssets.GetInstance().pfObstacleGameObject);
         float obstacleYPosition = height;
         obstacle.GetComponent<Transform>().position = new Vector3(xPosition, obstacleYPosition);
-        obstacle.GetComponent<Rigidbody2D>().velocity = new Vector3(Random.Range(-200f, 0f), Random.Range(-200f, 0f));
+        float xSpeed = Random.Range(obstacleXVelocityMax, obstacleXVelocityMin);
+        float ySpeed = Random.Range(obstacleYVelocityMax, obstacleYVelocityMin);
+        obstacle.GetComponent<Rigidbody2D>().velocity = new Vector3(xSpeed, ySpeed);
         Obstacle obstacleObj = new Obstacle(obstacle);
         obstacleList.Add(obstacleObj);
         // // [Old version] Set up Pipe Body
