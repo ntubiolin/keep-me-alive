@@ -46,8 +46,8 @@ public class Level : MonoBehaviour {
     private int foodPassedCount;
     private int obstaclesSpawned;
     private int foodSpawned;
-    private float deltaTimeFood = Random.Range(-0.3f, 0.3f);
-    private float deltaTimeObstacle = Random.Range(-0.2f, 0.2f);
+    private float deltaTimeFood;
+    private float deltaTimeObstacle;
     private float obstacleSpawnTimer = 0.5f;
     private float obstacleSpawnTimerMax;
     private float foodSpawnTimer = 0.7f;
@@ -72,6 +72,8 @@ public class Level : MonoBehaviour {
         return instance;
     }
     private void Awake() {
+        // deltaTimeFood = Random.Range(-0.3f, 0.3f);
+        // deltaTimeObstacle = Random.Range(-0.2f, 0.2f);
         instance = this;
         SpawnInitialGround(); 
         SpawnInitialClouds();

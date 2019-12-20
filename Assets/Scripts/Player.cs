@@ -6,9 +6,7 @@ using System.IO;
 using UnityEngine.SceneManagement;
 
 [Serializable]
-public class Player : MonoBehaviour {
-	private const float JUMP_AMOUNT = 180f;
-	
+public class Player : MonoBehaviour {	
 	public event EventHandler OnDied;
 	public event EventHandler OnStartedPlaying;
 	public event EventHandler OnReStartedPlaying;
@@ -16,6 +14,12 @@ public class Player : MonoBehaviour {
 	public static Player GetInstance() {
 		return instance;
 	}
+	
+	public static string playerType;
+	
+	public string standingPicPath;
+
+	public string crouchingPicPath;
 	public static string GetDebugMsg() {
 		return "I am player.";
 	}
@@ -26,14 +30,18 @@ public class Player : MonoBehaviour {
 	}
 	private int lifeScores = 1000;
 	private bool isContinueChangeLifeScores = false;
-	private float moveSpeed = 1.0f;
-	private float jumpHeight = 10.0f;
+	private float moveSpeed = 10000.0f;
+	private float jumpHeight = 1000.0f;
 	
 
 	private int actualSprite = 0;
+	//private int gravity;
+
+	//public float jumpHeight;
+	//public float moveSpeed;
 	private float spriteInterval = 0.1f;
 	private Sprite[] sprites = new Sprite[2];
-	private Sprite[] crouchingSprites = new Sprite[2];
+	private Sprite[] crouchingSprites = new Sprite[1];
 
 	[SerializeField]
 	private List<Cactus> cactus = new List<Cactus> ();
@@ -87,6 +95,7 @@ public class Player : MonoBehaviour {
 	}
 	// Use this for initialization
 	private void Awake() {
+		playerType = "Turtle";
 		instance = this;
 		playerRigidbody2D = GetComponent<Rigidbody2D>();
         playerRigidbody2D.bodyType = RigidbodyType2D.Static;// XXX What's its function?
@@ -97,13 +106,33 @@ public class Player : MonoBehaviour {
 	}
 	void Start () {	
 		GetComponent<BoxCollider2D> ().enabled = false;// XXX What's its function
-		sprites = Resources.LoadAll<Sprite> ("Art/Player/Standing");
-		crouchingSprites = Resources.LoadAll<Sprite> ("Art/Player/Crouching");
+		//gravity=gameObject.GetComponent<Rigidbody2D>();
+		if (playerType == "Turtle"){
+			standingPicPath = "Art/img/turtle/walking";
+			crouchingPicPath = "Art/img/turtle/attack";
+			playerRigidbody2D.gravityScale = GameConfigs.GetInstance().turtleAttr.getGravity();
+		}
+		else if(playerType == "Bird"){
+			standingPicPath = "Art/img/bird/walking";
+			crouchingPicPath = "Art/img/bird/attack";
+			playerRigidbody2D.gravityScale = GameConfigs.GetInstance().birdAttr.getGravity();
+
+		}
+		else if(playerType == "Whale"){
+			standingPicPath = "Art/img/fish/walking";
+			crouchingPicPath = "Art/img/fish/attack";
+			playerRigidbody2D.gravityScale = GameConfigs.GetInstance().whaleAttr.getGravity();
+
+		}
+		sprites = Resources.LoadAll<Sprite> (standingPicPath);
+		crouchingSprites = Resources.LoadAll<Sprite> (crouchingPicPath);
+		GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = false;// XXX What's its functionality? Game over scene?
 		// GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = false;// XXX What's its functionality? Game over scene?
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		//Debug.Log(playerType);
 		switch (state) {
         default:
         case State.WaitingToStart:
@@ -123,7 +152,15 @@ public class Player : MonoBehaviour {
             }
 
             // Rotate player as it jumps and falls
+			if (playerType == "Turtle"){
             transform.eulerAngles = new Vector3(0, 0, playerRigidbody2D.velocity.y * .15f);
+				}
+			else if (playerType == "Bird"){
+            transform.eulerAngles = new Vector3(0, 0, playerRigidbody2D.velocity.y * .15f);
+			}
+			else if (playerType == "Whale"){
+            transform.eulerAngles = new Vector3(0, 0, playerRigidbody2D.velocity.y * .15f);
+			}
             break;
         case State.Dead:
 			if(TestInput()){
@@ -149,7 +186,7 @@ public class Player : MonoBehaviour {
 		if (spriteInterval < 0) {
 			spriteInterval = 0.1f;
 			if (isCrouching) {				
-				GetComponent<SpriteRenderer> ().sprite = crouchingSprites [actualSprite];
+				GetComponent<SpriteRenderer> ().sprite = crouchingSprites [0];
 			} else {
 				GetComponent<SpriteRenderer> ().sprite = sprites [actualSprite];
 			}
@@ -201,7 +238,15 @@ public class Player : MonoBehaviour {
 	}
 
 	private void Jump() {
-        playerRigidbody2D.velocity = Vector2.up * JUMP_AMOUNT;
+		if (playerType == "Turtle"){
+        playerRigidbody2D.velocity = Vector2.up * GameConfigs.GetInstance().turtleAttr.getJumpAmount();
+		}
+		else if (playerType == "Bird"){
+        playerRigidbody2D.velocity = Vector2.up * GameConfigs.GetInstance().birdAttr.getJumpAmount();
+		}
+		else if (playerType == "Whale"){
+        playerRigidbody2D.velocity = Vector2.up * GameConfigs.GetInstance().whaleAttr.getJumpAmount();
+		}
         SoundManager.PlaySound(SoundManager.Sound.BirdJump);
     }
 	private bool TestInput() {
