@@ -20,7 +20,10 @@ public class GameOverWindow : MonoBehaviour {
 
     private Text scoreText;
     private Text highscoreText;
-
+	private static GameOverWindow instance;
+	public static GameOverWindow GetInstance() {
+		return instance;
+	}
     private void Awake() {
         scoreText = transform.Find("scoreText").GetComponent<Text>();
         highscoreText = transform.Find("highscoreText").GetComponent<Text>();
@@ -32,12 +35,19 @@ public class GameOverWindow : MonoBehaviour {
         transform.Find("mainMenuBtn").GetComponent<Button_UI>().ClickFunc = () => { 
             Loader.Load(Loader.Scene.MainMenu); 
         };
+        transform.Find("nextBtn").GetComponent<Button_UI>().ClickFunc = () => { 
+            //TODO20191221; 
+            // instance.transform.Find("GameOverPic").SetActive(true);
+            ShowGameOverMenu();
+        };
         transform.Find("mainMenuBtn").GetComponent<Button_UI>().AddButtonSounds();
+        transform.Find("nextBtn").GetComponent<Button_UI>().AddButtonSounds();
 
         transform.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
     }
 
     private void Start() {
+        
         Player.GetInstance().OnDied += Bird_OnDied;
         Hide();
     }
@@ -54,9 +64,9 @@ public class GameOverWindow : MonoBehaviour {
 
         if (Level.GetInstance().GetObstaclesPassedCount() >= Score.GetHighscore()) {
             // New Highscore!
-            highscoreText.text = "NEW HIGHSCORE";
+            highscoreText.text = Score.GetHighscore() + " (NEW!)";
         } else {
-            highscoreText.text = "HIGHSCORE: " + Score.GetHighscore();
+            highscoreText.text = Score.GetHighscore().ToString();
         }
 
         Show();
@@ -65,7 +75,19 @@ public class GameOverWindow : MonoBehaviour {
     private void Hide() {
         gameObject.SetActive(false);
     }
-
+    private void HideGameOverMenu() {
+        GameObject.Find("GameOverPic").SetActive(false);
+        // GameObject.Find("retryBtn").SetActive(false);
+        // GameObject.Find("mainMenuBtn").SetActive(false);
+        // transform.Find("GameOverPic").gameObject.SetActive(false);
+    }
+    private void ShowGameOverMenu() {
+        transform.Find("GameOverPic").gameObject.SetActive(true);
+        transform.Find("retryBtn").gameObject.SetActive(true);
+        transform.Find("mainMenuBtn").gameObject.SetActive(true);
+        transform.Find("scoreText").gameObject.SetActive(true);
+        transform.Find("highscoreText").gameObject.SetActive(true);
+    }
     private void Show() {
         gameObject.SetActive(true);
     }

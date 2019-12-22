@@ -38,6 +38,10 @@ public class GameAssets : MonoBehaviour {
     public Transform pfCloud_1;
     public Transform pfCloud_2;
     public Transform pfCloud_3;
+    public Transform pfMainMenuBackground;
+    public Transform pfStageTurtle;
+    public Transform pfStageWhale;
+    public Transform pfStageBird;
 
     public SoundAudioClip[] soundAudioClipArray;
 

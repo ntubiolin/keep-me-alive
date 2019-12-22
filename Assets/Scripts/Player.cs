@@ -93,9 +93,55 @@ public class Player : MonoBehaviour {
 	private static void Player_OnReStart(object sender, System.EventArgs e){
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
+	// public void loadStageSettings_depreciated(string playerTypeToChange = ""){
+	// 	if (playerTypeToChange != ""){
+	// 		playerType = playerTypeToChange;
+	// 	}
+	// 	if (playerType == "Turtle"){
+	// 		standingPicPath = "Art/img/turtle/walking";
+	// 		crouchingPicPath = "Art/img/turtle/attack";
+	// 		playerRigidbody2D.gravityScale = GameConfigs.GetInstance().turtleAttr.getGravity();
+	// 	}
+	// 	else if(playerType == "Bird"){
+	// 		standingPicPath = "Art/img/bird/walking";
+	// 		crouchingPicPath = "Art/img/bird/attack";
+	// 		playerRigidbody2D.gravityScale = GameConfigs.GetInstance().birdAttr.getGravity();
+
+	// 	}
+	// 	else if(playerType == "Whale"){
+	// 		standingPicPath = "Art/img/fish/walking";
+	// 		crouchingPicPath = "Art/img/fish/attack";
+	// 		playerRigidbody2D.gravityScale = GameConfigs.GetInstance().whaleAttr.getGravity();
+
+	// 	}
+	// 	sprites = Resources.LoadAll<Sprite> (standingPicPath);
+	// 	crouchingSprites = Resources.LoadAll<Sprite> (crouchingPicPath);
+	// }
+	public void loadStageSettings(string playerTypeToChange = ""){
+		if (playerTypeToChange != ""){
+			playerType = playerTypeToChange;
+		}
+		if (playerType == "Turtle"){
+			sprites = GameConfigs.GetInstance().turtleAttr.GetSprites();
+			crouchingSprites = GameConfigs.GetInstance().turtleAttr.GetCrouchingSprites();
+			playerRigidbody2D.gravityScale = GameConfigs.GetInstance().turtleAttr.getGravity();
+		}
+		else if(playerType == "Bird"){
+			sprites = GameConfigs.GetInstance().birdAttr.GetSprites();
+			crouchingSprites = GameConfigs.GetInstance().birdAttr.GetCrouchingSprites();
+			playerRigidbody2D.gravityScale = GameConfigs.GetInstance().birdAttr.getGravity();
+
+		}
+		else if(playerType == "Whale"){
+			sprites = GameConfigs.GetInstance().whaleAttr.GetSprites();
+			crouchingSprites = GameConfigs.GetInstance().whaleAttr.GetCrouchingSprites();
+			playerRigidbody2D.gravityScale = GameConfigs.GetInstance().whaleAttr.getGravity();
+
+		}
+	}
 	// Use this for initialization
 	private void Awake() {
-		playerType = "Turtle";
+		// playerType = "Turtle";
 		instance = this;
 		playerRigidbody2D = GetComponent<Rigidbody2D>();
         playerRigidbody2D.bodyType = RigidbodyType2D.Static;// XXX What's its function?
@@ -103,30 +149,13 @@ public class Player : MonoBehaviour {
 		instance.OnStartedPlaying += Player_OnStart;
 		instance.OnReStartedPlaying += Player_OnReStart;
 		state = State.WaitingToStart;
+		loadStageSettings();
 	}
 	void Start () {	
 		GetComponent<BoxCollider2D> ().enabled = false;// XXX What's its function
 		//gravity=gameObject.GetComponent<Rigidbody2D>();
-		if (playerType == "Turtle"){
-			standingPicPath = "Art/img/turtle/walking";
-			crouchingPicPath = "Art/img/turtle/attack";
-			playerRigidbody2D.gravityScale = GameConfigs.GetInstance().turtleAttr.getGravity();
-		}
-		else if(playerType == "Bird"){
-			standingPicPath = "Art/img/bird/walking";
-			crouchingPicPath = "Art/img/bird/attack";
-			playerRigidbody2D.gravityScale = GameConfigs.GetInstance().birdAttr.getGravity();
-
-		}
-		else if(playerType == "Whale"){
-			standingPicPath = "Art/img/fish/walking";
-			crouchingPicPath = "Art/img/fish/attack";
-			playerRigidbody2D.gravityScale = GameConfigs.GetInstance().whaleAttr.getGravity();
-
-		}
-		sprites = Resources.LoadAll<Sprite> (standingPicPath);
-		crouchingSprites = Resources.LoadAll<Sprite> (crouchingPicPath);
-		GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = false;// XXX What's its functionality? Game over scene?
+		
+		// GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = false;// XXX What's its functionality? Game over scene?
 		// GameObject.Find ("Canvas").GetComponent<Canvas> ().enabled = false;// XXX What's its functionality? Game over scene?
 	}
 	
