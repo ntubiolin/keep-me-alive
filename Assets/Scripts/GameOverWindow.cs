@@ -64,6 +64,7 @@ public class GameOverWindow : MonoBehaviour {
 
         if (Level.GetInstance().GetObstaclesPassedCount() >= Score.GetHighscore()) {
             // New Highscore!
+            Score.TrySetNewHighscore(Level.GetInstance().GetObstaclesPassedCount());
             highscoreText.text = Score.GetHighscore() + " (NEW!)";
         } else {
             highscoreText.text = Score.GetHighscore().ToString();

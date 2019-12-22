@@ -47,6 +47,8 @@ public class Level : MonoBehaviour {
     private int obstaclesSpawned;
     private int foodSpawned;
     private float deltaTimeFood;
+    private int deltaTimeScore;
+    private int scoreTimer;
     private float deltaTimeObstacle;
     private float obstacleSpawnTimer = 0.5f;
     private float obstacleSpawnTimerMax;
@@ -72,6 +74,8 @@ public class Level : MonoBehaviour {
         return instance;
     }
     private void Awake() {
+        scoreTimer = 0;
+        deltaTimeScore = 1;
         // deltaTimeFood = Random.Range(-0.3f, 0.3f);
         // deltaTimeObstacle = Random.Range(-0.2f, 0.2f);
         instance = this;
@@ -127,6 +131,7 @@ public class Level : MonoBehaviour {
     private void HandleTimers() {
         foodSpawnTimer += deltaTimeFood;
         obstacleSpawnTimer += deltaTimeObstacle;
+        scoreTimer += deltaTimeScore;
     }
     private void HandleClouds() {
         // Handle Cloud Spawning
@@ -355,7 +360,7 @@ public class Level : MonoBehaviour {
         // obstacleList.Add(obstacleObj);
     }
     public int GetObstaclesPassedCount() {
-        return obstaclesPassedCount;
+        return scoreTimer / 50;
     }
 
     /*

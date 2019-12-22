@@ -17,13 +17,14 @@ using UnityEngine;
 public static class Score {
 
     public static void Start() {
-        //ResetHighscore();
+        ResetHighscore();
         Debug.Log(Player.GetDebugMsg());
         Player.GetInstance();
-        Player.GetInstance().OnDied += Bird_OnDied;
+        Player.GetInstance().OnDied += Score_OnDied;
     }
 
-    private static void Bird_OnDied(object sender, System.EventArgs e) {
+    private static void Score_OnDied(object sender, System.EventArgs e) {
+        Debug.Log("LALALALALALALLALALALALLALA");
         TrySetNewHighscore(Level.GetInstance().GetObstaclesPassedCount());
     }
 
@@ -32,6 +33,7 @@ public static class Score {
     }
 
     public static bool TrySetNewHighscore(int score) {
+        Debug.Log(".>>>>>>>>>>,,,,,,," + score.ToString());
         int currentHighscore = GetHighscore();
         if (score > currentHighscore) {
             // New Highscore

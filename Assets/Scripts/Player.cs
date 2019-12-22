@@ -259,7 +259,6 @@ public class Player : MonoBehaviour {
 		}
 	}
 	void OnTriggerEnter2D(Collider2D coll){
-		CodeMonkey.CMDebug.TextPopupMouse(coll.gameObject.name);
 		if(coll.gameObject.name.StartsWith ("pff_")){
 			if (coll.gameObject != null)
 				Destroy(coll.gameObject);
