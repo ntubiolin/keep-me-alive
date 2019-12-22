@@ -249,7 +249,7 @@ public class Player : MonoBehaviour {
 
 	// Called when a collision happens
 	void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.name.StartsWith ("pfObstacle")) {
+		if (coll.gameObject.name.StartsWith ("pfo_")) {
 			if (isCrouching==false){	
 				CodeMonkey.CMDebug.TextPopupMouse("Collision");		
 				if (OnDied != null) OnDied(this, EventArgs.Empty);
@@ -259,7 +259,9 @@ public class Player : MonoBehaviour {
 		}
 	}
 	void OnTriggerEnter2D(Collider2D coll){
-		if(coll.gameObject.tag =="food"){
+		CodeMonkey.CMDebug.TextPopupMouse(coll.gameObject.name);
+		if(coll.gameObject.name.StartsWith ("pff_")){
+			CodeMonkey.CMDebug.TextPopupMouse("HIT!!!!!1");
 			if (coll.gameObject != null)
 				Destroy(coll.gameObject);
 				SoundManager.PlaySound(SoundManager.Sound.Score);

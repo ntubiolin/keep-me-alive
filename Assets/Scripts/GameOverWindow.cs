@@ -89,6 +89,19 @@ public class GameOverWindow : MonoBehaviour {
         transform.Find("highscoreText").gameObject.SetActive(true);
     }
     private void Show() {
+        if(Player.playerType == "Turtle"){
+            transform.Find("GameOverMsgTurtle").gameObject.SetActive(true);
+            transform.Find("GameOverMsgWhale").gameObject.SetActive(false);
+            transform.Find("GameOverMsgBird").gameObject.SetActive(false);
+        }else if(Player.playerType == "Whale"){
+            transform.Find("GameOverMsgTurtle").gameObject.SetActive(false);
+            transform.Find("GameOverMsgWhale").gameObject.SetActive(true);
+            transform.Find("GameOverMsgBird").gameObject.SetActive(false);
+        }else if(Player.playerType == "Bird"){
+            transform.Find("GameOverMsgTurtle").gameObject.SetActive(false);
+            transform.Find("GameOverMsgWhale").gameObject.SetActive(false);
+            transform.Find("GameOverMsgBird").gameObject.SetActive(true);
+        }
         gameObject.SetActive(true);
     }
 

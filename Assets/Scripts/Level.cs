@@ -308,8 +308,17 @@ public class Level : MonoBehaviour {
         SetDifficulty(GetDifficulty());
     }
     private void CreateFood(float height, float xPosition) {
-        // Set up Pipe Body
-        Transform food = Instantiate(GameAssets.GetInstance().pfFood);
+        Transform x = GameAssets.GetInstance().pfFoodTurtle; 
+        if(Player.playerType == "Turtle"){
+            x = GameAssets.GetInstance().pfFoodTurtle;
+        }else if (Player.playerType == "Whale"){
+            x = GameAssets.GetInstance().pfFoodWhale;
+        }else if (Player.playerType == "Bird"){
+            x = GameAssets.GetInstance().pfFoodBird;
+        }else{
+            Debug.Log("Error >>>> playerType not found in CreateObstacle!");
+        }
+        Transform food = Instantiate(x);
         float foodYPosition = height;
 
         food.position = new Vector3(xPosition, foodYPosition);
@@ -318,7 +327,18 @@ public class Level : MonoBehaviour {
     }
     private void CreateObstacle(float height, float xPosition) {
         // Try obstacle with speed
-        GameObject obstacle = Instantiate(GameAssets.GetInstance().pfObstacleGameObject);
+        // XXX
+        GameObject x = GameAssets.GetInstance().pfObstaclesTurtle[Random.Range(0,2)]; 
+        if(Player.playerType == "Turtle"){
+            x = GameAssets.GetInstance().pfObstaclesTurtle[Random.Range(0,2)];
+        }else if (Player.playerType == "Whale"){
+            x = GameAssets.GetInstance().pfObstaclesWhale[Random.Range(0,2)];
+        }else if (Player.playerType == "Bird"){
+            x = GameAssets.GetInstance().pfObstaclesBird[Random.Range(0,2)];
+        }else{
+            Debug.Log("Error >>>> playerType not found in CreateObstacle!");
+        }
+        GameObject obstacle = Instantiate(x);
         float obstacleYPosition = height;
         obstacle.GetComponent<Transform>().position = new Vector3(xPosition, obstacleYPosition);
         float xSpeed = Random.Range(obstacleXVelocityMax, obstacleXVelocityMin);

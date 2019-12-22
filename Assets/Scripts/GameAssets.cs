@@ -31,7 +31,13 @@ public class GameAssets : MonoBehaviour {
     public Sprite pipeHeadSprite;
     public Transform pfObstacle;
     public GameObject pfObstacleGameObject;
+    public GameObject[] pfObstaclesTurtle;
+    public GameObject[] pfObstaclesWhale;
+    public GameObject[] pfObstaclesBird;
     public Transform pfFood;
+    public Transform pfFoodTurtle;
+    public Transform pfFoodWhale;
+    public Transform pfFoodBird;
     public Transform pfPipeHead;
     public Transform pfPipeBody;
     public Transform pfGround;
