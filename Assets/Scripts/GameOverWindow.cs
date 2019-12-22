@@ -53,10 +53,7 @@ public class GameOverWindow : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            // Retry
-            Loader.Load(Loader.Scene.GameScene);
-        }
+
     }
 
     private void Bird_OnDied(object sender, System.EventArgs e) {
