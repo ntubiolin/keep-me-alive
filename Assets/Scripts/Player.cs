@@ -251,7 +251,7 @@ public class Player : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.name.StartsWith ("pfo_")) {
 			if (isCrouching==false){	
-				CodeMonkey.CMDebug.TextPopupMouse("Collision");		
+				CodeMonkey.CMDebug.TextPopupMouse("I died!! QQ");		
 				if (OnDied != null) OnDied(this, EventArgs.Empty);
 			}
 		} else if (coll.gameObject.name.StartsWith ("pfGround")) {
@@ -261,7 +261,6 @@ public class Player : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll){
 		CodeMonkey.CMDebug.TextPopupMouse(coll.gameObject.name);
 		if(coll.gameObject.name.StartsWith ("pff_")){
-			CodeMonkey.CMDebug.TextPopupMouse("HIT!!!!!1");
 			if (coll.gameObject != null)
 				Destroy(coll.gameObject);
 				SoundManager.PlaySound(SoundManager.Sound.Score);

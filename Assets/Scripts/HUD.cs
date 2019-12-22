@@ -12,6 +12,7 @@ public class HUD : MonoBehaviour {
 	void Start () {
 		score = 0;
 		UpdatePlayerScore(Player.GetInstance().getPlayerLifeScore());
+		Player.GetInstance().OnDied += Bird_OnDied;
 	}
 	
 	// Update is called once per frame
@@ -30,4 +31,7 @@ public class HUD : MonoBehaviour {
 	{
 		scoreText.text = "LifeScore: " + score;
 	}
+	private void Bird_OnDied(object sender, System.EventArgs e) {
+        gameObject.SetActive(false);
+    }
 }
