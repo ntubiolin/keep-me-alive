@@ -66,6 +66,21 @@ public class GameConfigs : MonoBehaviour {
     //     }
     //     return Resources.Load<Sprite> ("Art/ui/choose_turtle" + EXT);
     // }
+    public void ChangeBackground(string backgroundName="Turtle"){
+        if(backgroundName == "Turtle"){
+            transform.Find("TurtleStageBackground").gameObject.SetActive(true);
+            transform.Find("WhaleStageBackground").gameObject.SetActive(false);
+            transform.Find("BirdStageBackground").gameObject.SetActive(false);
+        }else if(backgroundName == "Whale"){
+            transform.Find("TurtleStageBackground").gameObject.SetActive(false);
+            transform.Find("WhaleStageBackground").gameObject.SetActive(true);
+            transform.Find("BirdStageBackground").gameObject.SetActive(false);
+        }else if(backgroundName == "Bird"){
+            transform.Find("TurtleStageBackground").gameObject.SetActive(false);
+            transform.Find("WhaleStageBackground").gameObject.SetActive(false);
+            transform.Find("BirdStageBackground").gameObject.SetActive(true);
+        }
+	}
     public class StageAttr{
         private float JUMP_AMOUNT;
         private float PIPE_MOVE_SPEED;

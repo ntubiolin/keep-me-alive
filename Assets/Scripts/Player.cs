@@ -121,6 +121,7 @@ public class Player : MonoBehaviour {
 		if (playerTypeToChange != ""){
 			playerType = playerTypeToChange;
 		}
+		GameConfigs.GetInstance().ChangeBackground(playerType);
 		if (playerType == "Turtle"){
 			sprites = GameConfigs.GetInstance().turtleAttr.GetSprites();
 			crouchingSprites = GameConfigs.GetInstance().turtleAttr.GetCrouchingSprites();
